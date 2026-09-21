@@ -135,7 +135,19 @@ void test_find_last_empty(void)
 
 void test_link_three_chain(void)
 {
-    // TODO
+    Node a;
+    Node b;
+    Node c;
+
+    Node *aPtr = &a;
+    Node *bPtr = &b;
+    Node *cPtr = &c;
+
+    link_three(aPtr, bPtr, cPtr);
+
+    TEST_ASSERT_EQUAL_PTR(bPtr, aPtr->nextPtr);
+    TEST_ASSERT_EQUAL_PTR(cPtr, bPtr->nextPtr);
+    TEST_ASSERT_NULL(cPtr->nextPtr);
 }
 
 
@@ -151,7 +163,19 @@ void test_link_three_chain(void)
 
 void test_remove_middle_reconnects(void)
 {
-    // TODO
+    Node a;
+    Node b;
+    Node c;
+
+    Node *aPtr = &a;
+    Node *bPtr = &b;
+    Node *cPtr = &c;
+
+    link_three(aPtr, bPtr, cPtr);
+    remove_middle(aPtr, bPtr, cPtr);
+
+    TEST_ASSERT_EQUAL_PTR(cPtr, aPtr->nextPtr);
+    TEST_ASSERT_NULL(bPtr->nextPtr);
 }
 
 
@@ -167,7 +191,19 @@ void test_remove_middle_reconnects(void)
 
 void test_remove_last_truncates(void)
 {
-    // TODO
+    Node a;
+    Node b;
+    Node c;
+
+    Node *aPtr = &a;
+    Node *bPtr = &b;
+    Node *cPtr = &c;
+
+    link_three(aPtr, bPtr, cPtr);
+    remove_last(&b);
+
+    TEST_ASSERT_EQUAL_PTR(bPtr, aPtr->nextPtr);
+    TEST_ASSERT_NULL(bPtr->nextPtr);
 }
 
 
@@ -183,7 +219,19 @@ void test_remove_last_truncates(void)
 
 void test_remove_first_isolates(void)
 {
-    // TODO
+    Node a;
+    Node b;
+    Node c;
+
+    Node *aPtr = &a;
+    Node *bPtr = &b;
+    Node *cPtr = &c;
+
+    link_three(aPtr, bPtr, cPtr);
+    remove_first(&a);
+
+    TEST_ASSERT_EQUAL_PTR(cPtr, bPtr->nextPtr);
+    TEST_ASSERT_NULL(aPtr->nextPtr);
 }
 
 
@@ -197,7 +245,18 @@ void test_remove_first_isolates(void)
 
 void test_swap_ptrs_redirects(void)
 {
-    // TODO
+    int a = 10;
+    int b = 20;
+
+    int *aPtr = &a;
+    int *bPtr = &b;
+
+    swap_ptrs(&aPtr, &bPtr);
+
+    int expAptr = 20, expBptr = 10;
+    TEST_ASSERT_EQUAL_INT(expAptr, *aPtr);
+    TEST_ASSERT_EQUAL_INT(expBptr, *bPtr);
+
 }
 
 
@@ -212,7 +271,17 @@ void test_swap_ptrs_redirects(void)
 
 void test_swap_ptrs_values_unchanged(void)
 {
-    // TODO
+    int a = 10;
+    int b = 20;
+
+    int *aPtr = &a;
+    int *bPtr = &b;
+
+    swap_ptrs(&aPtr, &bPtr);
+
+    int expA = 10, expB = 20;
+    TEST_ASSERT_EQUAL_INT(expA, a);
+    TEST_ASSERT_EQUAL_INT(expB, b);
 }
 
 
@@ -227,7 +296,12 @@ void test_swap_ptrs_values_unchanged(void)
 
 void test_nullify_sets_null(void)
 {
-    // TODO
+    int x = 5;
+    int *pPtr = &x;
+    
+    nullify(&pPtr);
+
+    TEST_ASSERT_NULL(pPtr);
 }
 
 
@@ -242,7 +316,13 @@ void test_nullify_sets_null(void)
 
 void test_nullify_value_unchanged(void)
 {
-    // TODO
+    int x = 5;
+    int *pPtr = &x;
+    
+    nullify(&pPtr);
+
+    int expX = 5;
+    TEST_ASSERT_EQUAL_INT(expX, x);
 }
 
 
@@ -257,7 +337,15 @@ void test_nullify_value_unchanged(void)
 
 void test_assign_bytes_first_and_last(void)
 {
-    // TODO
+    long long n = 0;
+    assign_bytes(&n);
+
+    unsigned char *p = (unsigned char *)&n;
+
+    int expByte0 = 1, expByte7 = 8;
+
+    TEST_ASSERT_EQUAL_INT(expByte0, p[0]);
+    TEST_ASSERT_EQUAL_INT(expByte7 = 8, p[7]);
 }
 
 
@@ -272,7 +360,15 @@ void test_assign_bytes_first_and_last(void)
 
 void test_assign_bytes_all(void)
 {
-    // TODO
+    long long n = 0;
+    assign_bytes(&n);
+
+    unsigned char *p = (unsigned char *)&n;
+
+    for (int i = 0; i < 8; i++)
+    {
+        TEST_ASSERT_EQUAL_INT(i + 1, p[i]);
+    }
 }
 
 
@@ -287,7 +383,26 @@ void test_assign_bytes_all(void)
 
 void test_sum_chain_basic(void)
 {
-    // TODO
+    Node a;
+    Node b;
+    Node c;
+
+    Node *aPtr = &a;
+    Node *bPtr = &b;
+    Node *cPtr = &c;
+
+    link_three(aPtr, bPtr, cPtr);
+
+    a.value = 1;
+    b.value = 2;
+    c.value = 3;
+
+    int sum = sum_chain(aPtr);
+
+    int expSum = 6;
+
+    TEST_ASSERT_EQUAL_INT(expSum, sum);
+
 }
 
 
@@ -301,7 +416,17 @@ void test_sum_chain_basic(void)
 
 void test_sum_chain_single(void)
 {
-    // TODO
+    Node a;
+    Node *aPtr = &a;
+    a.value = 1;
+
+    a.nextPtr = NULL;
+
+    int sum = sum_chain(aPtr);
+
+    int expSum = 1;
+
+    TEST_ASSERT_EQUAL_INT(expSum, sum);
 }
 
 
@@ -314,5 +439,8 @@ void test_sum_chain_single(void)
 
 void test_sum_chain_null(void)
 {
-    // TODO
+    int sum = sum_chain(NULL);
+    int expSum = 0;
+
+    TEST_ASSERT_EQUAL_INT(expSum, sum);
 }
