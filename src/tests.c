@@ -345,7 +345,7 @@ void test_assign_bytes_first_and_last(void)
     int expByte0 = 1, expByte7 = 8;
 
     TEST_ASSERT_EQUAL_INT(expByte0, p[0]);
-    TEST_ASSERT_EQUAL_INT(expByte7 = 8, p[7]);
+    TEST_ASSERT_EQUAL_INT(expByte7, p[7]);
 }
 
 
